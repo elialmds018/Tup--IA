@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TupãIA — Especialista na Estância Turística de Tupã - SP</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Barra Lateral -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+          <h1>TupãIA</h1>
+          <span>Especialista em Tupã - SP</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section-title">Temas em Destaque</div>
+      <div class="suggested-topics">
+        <button class="topic-chip" data-query="Conte a história da fundação de Tupã e quem foi Luiz de Souza Leão.">
+          <span>🏛️</span> História e Fundação
+        </button>
+        <button class="topic-chip" data-query="Fale sobre a UniFADAP, seus cursos e importância em Tupã.">
+          <span>🎓</span> UniFADAP (Faculdades)
+        </button>
+        <button class="topic-chip" data-query="Como é o Câmpus da UNESP em Tupã e quais cursos oferece?">
+          <span>🔬</span> UNESP Câmpus Tupã
+        </button>
+        <button class="topic-chip" data-query="O que ver no Museu Índia Vanuíre e qual seu acervo?">
+          <span>🏺</span> Museu Índia Vanuíre
+        </button>
+        <button class="topic-chip" data-query="Conte sobre o Distrito de Varpa, a imigração letã e suas atrações.">
+          <span>🌾</span> Distrito de Varpa (Letônia)
+        </button>
+        <button class="topic-chip" data-query="Quais os principais pontos turísticos para visitar em Tupã?">
+          <span>🌳</span> Turismo e Praça da Bandeira
+        </button>
+        <button class="topic-chip" data-query="Como funciona a economia de Tupã e o título de capital do amendoim?">
+          <span>🥜</span> Economia e Amendoim
+        </button>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="status-badge">
+          <span class="status-dot local" id="statusDot"></span>
+          <span id="statusText">Modo Base Local</span>
+        </div>
+        <button class="btn-secondary" id="btnOpenSettings">
+          <span>⚙️</span> Configurar API Gemini
+        </button>
+        <button class="btn-secondary" id="btnClearChat">
+          <span>🗑️</span> Limpar Conversa
+        </button>
+      </div>
+    </aside>
+
+    <!-- Área Principal do Chat -->
+    <main class="chat-container">
+      <header class="chat-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">☰</button>
+          <div class="header-info">
+            <h2>TupãIA • Inteligência da Alta Paulista</h2>
+            <p>História, cultura, ensino superior, turismo e cotidiano de Tupã - SP</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Mensagens da Conversa -->
+      <section class="chat-messages" id="chatMessages">
+        <!-- Renderizado dinamicamente via app.js -->
+      </section>
+
+      <!-- Campo de Envio de Mensagem -->
+      <footer class="chat-input-area">
+        <form class="chat-form" id="chatForm">
+          <input 
+            type="text" 
+            class="chat-input" 
+            id="userInput" 
+            placeholder="Pergunte qualquer coisa sobre Tupã, SP (ex: história, UniFADAP, Varpa)..." 
+            autocomplete="off"
+            required
+          >
+          <button type="submit" class="btn-send" id="btnSend">Enviar</button>
+        </form>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Modal de Configuração do Google Gemini -->
+  <div class="modal" id="settingsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>⚙️ Conectar ao Google Gemini</h3>
+        <button class="btn-close" id="btnCloseSettings">&times;</button>
+      </div>
+      
+      <form id="settingsForm">
+        <div class="form-group">
+          <label for="apiKeyInput">Sua Chave de API do Google Gemini:</label>
+          <input 
+            type="password" 
+            id="apiKeyInput" 
+            class="form-control" 
+            placeholder="AIzaSy..." 
+          >
+          <p class="api-hint">
+            Obtenha sua chave gratuita em: 
+            <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a>.
+            <br>
+            <em>Sua chave fica guardada apenas no seu navegador (localStorage) e nunca é compartilhada.</em>
+          </p>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label for="modelSelect">Modelo de IA:</label>
+          <select id="modelSelect" class="form-control">
+            <option value="gemini-1.5-flash">Gemini 1.5 Flash (Rápido e Gratuito)</option>
+            <option value="gemini-2.0-flash">Gemini 2.0 Flash (Mais Recente)</option>
+            <option value="gemini-1.5-pro">Gemini 1.5 Pro (Raciocínio Avançado)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 14px; width: 100%;">
+          Salvar Configurações
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="tupa_knowledge.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
