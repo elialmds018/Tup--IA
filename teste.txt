@@ -1,0 +1,8 @@
+=========================================
+ARQUIVO DE TESTE DO GITHUB
+=========================================
+Data e Hora: 2026-10-22 20:30
+Status: Arquivo criado na pasta local com sucesso!
+
+Se você estiver vendo este arquivo no GitHub Desktop
+ou no site do GitHub, a sincronização está funcionando!
