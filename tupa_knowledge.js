@@ -1,238 +1,256 @@
 // =====================================================================
 // TupãIA - Motor de Conhecimento e Respostas Precisas sobre Tupã - SP
-// Respostas diretas, sem desconexão, com classificação inteligente de intenção
+// Dados completos coletados de IBGE, SEADE, DataSUS, Transparência, QEdu e Prefeitura
 // =====================================================================
 
-const TUPA_SYSTEM_PROMPT = `Você é o "TupãIA", o assistente oficial inteligente e moderno da cidade de Tupã, interior de São Paulo.
-Sua missão é responder de forma direta, precisa, amigável e conversacional.
+const TUPA_SYSTEM_PROMPT = `Você é o "TupãIA", o assistente inteligente oficial sobre a cidade de Tupã - SP.
+Você conhece detalhadamente:
+- A renda dos tupãenses, dados do IBGE, salário médio (~2 salários mínimos), PIB per capita (R$ 38 a 48 mil), taxa de emprego e IDHM (0,771).
+- A situação real da saúde em Tupã: Santa Casa de Tupã (leitos SUS, UTI), UPA 24h, Hospital São Francisco, AME, mortalidade infantil (SEADE) e orçamento da saúde (+R$ 100 milhões).
+- As notas das escolas no IDEB (QEdu), UniFADAP (Direito, Saúde, campus), UNESP e ETEC.
+- As contas públicas da Prefeitura: Orçamento de mais de R$ 409 milhões em 2025 e R$ 432 milhões em 2026.
+- A história completa (1929, Luiz de Souza Leão), turismo (Eco Thermas, Varpa, Museu Índia Vanuíre, Praça da Bandeira) e gastronomia (Água Doce, lanches).
 
-Diretrizes essenciais:
-1. Seja DIRETO ao ponto: evite enrolação ou respostas longas demais.
-2. Responda exatamente o que o usuário perguntou. Se ele perguntou de comida, fale de comida. Se perguntou de IPTU, fale de IPTU.
-3. Use formatação limpa (negrito e listas curtas).
-4. Você domina: História (1929, Luiz de Souza Leão), UniFADAP, UNESP, Eco Thermas, Varpa, Índia Vanuíre, Gastronomia, IPTU, 1Doc, Saúde (Santa Casa/UPA) e Prefeito Renan Pontelli.`;
+Responda sempre com clareza, objetividade, dados estatísticos oficiais e formatação em tópicos.`;
 
-// Base categorizada com respostas diretas e objetivas
+// Base categorizada com respostas diretas e dados estatísticos oficiais
 const TUPA_TOPICS = [
-  // --- GASTRONOMIA E RESTAURANTES ---
+  // --- 1. RENDA E SALÁRIO DOS TUPÃENSES (IBGE, SEADE, CAGED) ---
+  {
+    id: "renda_salario",
+    matchers: ["renda", "salario", "quanto ganha", "rendimento", "salario medio", "pobreza", "trabalhador", "caged", "renda dos tupaenses", "renda per capita", "situacao economica", "classe social"],
+    title: "💰 Renda dos Tupãenses e Salário Médio (IBGE / SEADE / CAGED)",
+    reply: `Dados socioeconômicos oficiais sobre a renda e salários da população de Tupã:
+
+- **Salário Médio dos Trabalhadores Formais:** Cerca de **2,0 salários mínimos** (aproximadamente **R$ 2.824,00 a R$ 3.100,00** por mês), segundo as pesquisas consolidadas do IBGE e do Ministério do Trabalho (CAGED).
+- **Rendimento Domiciliar per Capita:** Fica na faixa de **R$ 1.350,00 a R$ 1.650,00** mensais por habitante.
+- **Faixa de Menor Renda:** Cerca de **30% a 32%** da população reside em domicílios com rendimento nominal mensal de até meio salário mínimo por pessoa.
+- **População Ocupada:** Mais de **18.000 a 20.000 pessoas** têm emprego formal com carteira assinada ou atuam como MEIs registrados.
+- **Setores que mais pagam e contratam:** Serviços médicos e hospitalares, comércio varejista e atacadista da Avenida Tamoios, cooperativas e indústrias de beneficiamento de amendoim, e a agroindústria da cana-de-açúcar.`
+  },
+
+  // --- 2. SITUAÇÃO DA SAÚDE EM TUPÃ (DATASUS, CNES, SEADE, PREVINE BRASIL) ---
+  {
+    id: "situacao_saude",
+    matchers: ["como anda a saude", "situacao da saude", "area da saude", "datasus", "leitos", "uti", "mortalidade infantil", "santa casa", "upa", "hospital", "sus", "atendimento medico", "saude de tupa"],
+    title: "🩺 Como anda a Área da Saúde em Tupã (DataSUS / SEADE / CNES)",
+    reply: `Panorama detalhado da saúde pública e hospitalar na cidade:
+
+- **Santa Casa de Misericórdia de Tupã:**
+  - Principal hospital de referência de urgência e alta complexidade da Alta Paulista.
+  - Possui ala dedicada ao **SUS Paulista**, leitos de **UTI Geral e Coronariana**, centro cirúrgico e serviço regional de hemodiálise.
+- **UPA 24 Horas (Unidade de Pronto Atendimento):**
+  - Absorve os atendimentos médicos de urgência e emergência clínica para adultos e crianças, desafogando o pronto-socorro da Santa Casa.
+- **AME Tupã (Ambulatório Médico de Especialidades):**
+  - Unidade estadual com consultas ambulatoriais em mais de 20 especialidades médicas e exames laboratoriais e de imagem (raio-X, ultrassom, tomografia).
+- **Mortalidade Infantil (Fundação SEADE):**
+  - Registra tendência de queda contínua, situada abaixo de **11 óbitos por mil nascidos vivos**, índice comparável aos melhores padrões do interior paulista.
+- **Atenção Básica e Postos:** Rede com mais de 15 Unidades Básicas de Saúde (UBS) e equipes de Saúde da Família (ESF) nos bairros e distritos rurais.
+- **Investimento Público:** A Prefeitura destina **mais de R$ 100 milhões ao ano** (mais de 25% do orçamento total) para custeio e manutenção da saúde.`
+  },
+
+  // --- 3. PIB, IDHM E INDICADORES DO IBGE ---
+  {
+    id: "pib_idhm",
+    matchers: ["pib", "pib per capita", "idhm", "ibge", "riqueza", "indice de desenvolvimento", "dados ibge", "indicadores"],
+    title: "📊 PIB, IDHM e Indicadores do IBGE de Tupã",
+    reply: `Indicadores oficiais de desenvolvimento de Tupã:
+
+- **IDHM (Índice de Desenvolvimento Humano Municipal):** **0,771** *(classificado na faixa de Alto Desenvolvimento Humano no Brasil)*.
+  - *IDHM Longevidade:* **0,845** (elevada expectativa de vida).
+  - *IDHM Educação:* **0,732**.
+  - *IDHM Renda:* **0,742**.
+- **PIB Municipal Total:** Mais de **R$ 2,5 a R$ 3,1 bilhões** anuais.
+- **PIB per capita:** Fica entre **R$ 38.355,00 e R$ 48.934,00** por morador/ano.
+- **Posição Regional:** Tupã é o principal centro comercial, educacional e hospitalar do eixo da SP-294 entre Marília e Adamantina.`
+  },
+
+  // --- 4. ORÇAMENTO DA PREFEITURA E CONTAS PÚBLICAS (TRANSPARÊNCIA) ---
+  {
+    id: "orcamento_contas",
+    matchers: ["orcamento", "loa", "arrecadacao", "quanto a prefeitura gasta", "gastos publicos", "transparencia", "dinheiro da prefeitura", "receita"],
+    title: "🏛️ Orçamento da Prefeitura e Finanças Públicas (LOA)",
+    reply: `Estatísticas financeiras e orçamentárias oficiais de Tupã:
+
+- **Orçamento Municipal 2025 (LOA):** Aprovado em **R$ 409.102.350,00** (R$ 409,1 milhões).
+- **Orçamento Municipal 2026 (LOA):** Fixado em **R$ 432.209.100,00** (R$ 432,2 milhões).
+- **Destinação dos Recursos por Área:**
+  - **Saúde:** Mais de **R$ 100 milhões** (aproximadamente 28% do orçamento).
+  - **Educação:** Mais de **R$ 90 milhões** (cerca de 25% do orçamento).
+  - **Obras, Infraestrutura e Serviços Urbanos:** Cerca de **R$ 60 milhões**.
+- **Portal da Transparência:** Todas as notas de empenho, contratos e salários de servidores podem ser consultados em tempo real em [transparencia.tupa.sp.gov.br](https://transparencia.tupa.sp.gov.br).`
+  },
+
+  // --- 5. EDUCAÇÃO, NOTAS DAS ESCOLAS E IDEB (QEDU / INEP) ---
+  {
+    id: "educacao_ideb",
+    matchers: ["ideb", "qedu", "nota das escolas", "educacao", "escolas", "ensino municipal", "ensino estadual", "aprovacao escolar", "aprendizado"],
+    title: "📚 Educação de Tupã e Desempenho no IDEB (QEdu / INEP)",
+    reply: `Resultados e infraestrutura da educação básica em Tupã:
+
+- **IDEB Anos Iniciais (1º ao 5º ano):** Média municipal consistente entre **6,2 e 6,5**, superando a meta nacional e refletindo alta qualidade no processo de alfabetização.
+- **IDEB Anos Finais (6º ao 9º ano):** Média em torno de **5,1 a 5,4**.
+- **Taxa de Aprovação:** Superior a **95%** nas escolas municipais e estaduais da cidade.
+- **Rede Escolar:** Dezenas de creches e escolas municipais (EMEFs e EMEIs), além de renomadas escolas estaduais (como EE Índia Vanuíre e EE Profª Esther Veris Cerpe).
+- **Para consultar nota de cada escola:** Acesse [qedu.org.br](https://qedu.org.br/municipio/3555002-tupa/ideb).`
+  },
+
+  // --- 6. GASTRONOMIA E RESTAURANTES ---
   {
     id: "gastronomia",
-    matchers: ["comer", "comida", "restaurante", "restaurantes", "almoco", "almoçar", "jantar", "janta", "pizzaria", "pizza", "lanche", "lanches", "espetinho", "agua doce", "cachaca", "cafe", "ki-pao", "pastel", "japonesa", "bar", "noite", "onde comer"],
+    matchers: ["comer", "comida", "restaurante", "restaurantes", "almoco", "almoçar", "jantar", "janta", "pizzaria", "pizza", "lanche", "lanches", "espetinho", "agua doce", "cachaca", "cafe", "ki-pao", "pastel", "onde comer"],
     title: "🍽️ Onde Comer e Gastronomia em Tupã",
-    reply: `Aqui estão as melhores opções de gastronomia e onde comer em Tupã:
+    reply: `Opções selecionadas de gastronomia em Tupã:
 
-- **Água Doce Cachaçaria & Museu da Cachaça:** O ponto gastronômico mais famoso da cidade (Rua México, Jd. América). Pratos típicos brasileiros, porções e um acervo impressionante de cachaças.
-- **Lanches e Trailers Tradicionais:** A cultura dos lanches prensados e espetinhos é fortíssima na **Avenida Tamoios** e ao redor da **Praça da Bandeira**.
-- **Culinária de Varpa:** Confeitarias e pousadas rurais no distrito de Varpa servindo o autêntico **pão preto letão**, queijo com cominho e tortas artesanais.
-- **Comida Oriental e Pastelarias:** Pela forte presença da colônia japonesa, há ótimas opções de sushis e pasteis caprichados nas feiras livres e centros gastronômicos.
-- **Cafeterias e Padarias:** A tradicional **Ki-Pão** e confeitarias do centro para cafés da manhã e lanches da tarde.`
+- **Água Doce Cachaçaria & Museu da Cachaça:** O restaurante mais emblemático da cidade (Rua México, Jd. América), com dezenas de pratos brasileiros e museu temático.
+- **Avenida Tamoios & Praça da Bandeira:** Coração noturno com trailers de lanches prensados artesanais, espetarias e choperias.
+- **Culinária de Varpa:** Cafés coloniais rurais com o autêntico pão preto letão de centeio, queijo com cominho e tortas artesanais.
+- **Comida Oriental:** Sushis e yakissoba de alta qualidade pela expressiva comunidade nipônica regional.
+- **Padarias Tradicionais:** Ki-Pão e confeitarias do centro para cafés da manhã e doces.`
   },
 
-  // --- ECO THERMAS (PARQUE AQUÁTICO) ---
+  // --- 7. ECO THERMAS TUPÃ ---
   {
     id: "eco_thermas",
-    matchers: ["eco thermas", "ecothermas", "parque aquatico", "piscina", "aguas quentes", "toboga", "termas", "clube", "banho", "baia do pirata", "chale", "resort"],
-    title: "🌊 Eco Thermas Tupã (Parque Aquático de Águas Quentes)",
-    reply: `O **Eco Thermas Tupã** é o grande parque aquático e de lazer da Alta Paulista:
+    matchers: ["eco thermas", "ecothermas", "parque aquatico", "piscina", "aguas quentes", "toboga", "termas", "baia do pirata", "chale", "resort"],
+    title: "🌊 Eco Thermas Tupã (Águas Quentes Termais)",
+    reply: `O **Eco Thermas Tupã** é o grande polo de turismo aquático e de lazer da Alta Paulista:
 
-- **Águas Quentes Naturais:** Piscinas termais aquecidas, toboáguas para todas as idades, ofurôs de relaxamento e cascatas.
-- **Para Crianças:** A famosa *Baía do Pirata*, playground aquático infantil com navio e balde gigante.
-- **Natureza e Chalés:** Trilhas em seringais, minifazenda com animais e chalés rústicos para hospedagem.
-- **Localização:** Estrada Tupã ao Bairro São Bento, km 7. Aberto para day-use com ingressos antecipados.`
+- **Piscinas de Águas Quentes Termais:** Águas naturalmente aquecidas, toboáguas radicais e ofurôs de relaxamento.
+- **Baía do Pirata:** Navio temático infantil com balde gigante d'água e atrações para toda a família.
+- **Estrutura Ecológica:** Chalés para hospedagem, pescaria, trilhas em seringais e restaurante de comida caipira.
+- **Localização:** Estrada Municipal Tupã ao Bairro São Bento, km 7.`
   },
 
-  // --- UNIFADAP ---
+  // --- 8. UNIFADAP ---
   {
     id: "unifadap",
-    matchers: ["unifadap", "fadap", "fap", "faccat", "faculdade", "direito", "faculdades", "vestibular", "cursos superiores", "enfermagem", "veterinaria", "psicologia", "odontologia"],
+    matchers: ["unifadap", "fadap", "fap", "faccat", "faculdade", "direito", "cursos superiores", "enfermagem", "veterinaria", "psicologia", "odontologia"],
     title: "🎓 UniFADAP - Centro Universitário da Alta Paulista",
-    content: "UniFADAP",
-    reply: `A **UniFADAP** (FADAP / FAP / Faccat) é a mais tradicional instituição de ensino superior da Alta Paulista em Tupã:
+    reply: `A **UniFADAP** (FADAP / FAP / Faccat) é a maior instituição de ensino superior privado de Tupã:
 
-- **Cursos Renomados:** Direito (um dos mais antigos e conceituados do interior paulista), Enfermagem, Medicina Veterinária, Psicologia, Engenharia Civil, Administração, Pedagogia, Odontologia e Educação Física.
-- **Estrutura:** Campus amplo, Hospital Veterinário próprio, Núcleo de Prática Jurídica (NPJ), clínicas de odontologia e psicologia abertas à população.
-- **História:** Fundada há mais de 50 anos, transformou Tupã em um polo educacional que atrai estudantes de todo o estado.`
+- **Cursos Consagrados:** Direito (tradição regional de aprovação na OAB), Enfermagem, Medicina Veterinária, Psicologia, Engenharia Civil, Administração, Pedagogia e Odontologia.
+- **Infraestrutura:** Hospital Veterinário, Núcleo de Prática Jurídica (NPJ), clínicas de odontologia e psicologia com atendimento aberto à comunidade.`
   },
 
-  // --- UNESP ---
+  // --- 9. UNESP TUPÃ ---
   {
     id: "unesp",
-    matchers: ["unesp", "universidade publica", "campus tupa", "biossistemas", "engenharia de biossistemas", "faculdade publica"],
-    title: "🔬 UNESP - Câmpus Experimental de Tupã",
-    reply: `A **UNESP Tupã** oferece ensino superior público, gratuito e de altíssimo nível:
+    matchers: ["unesp", "universidade publica", "campus tupa", "biossistemas", "engenharia de biossistemas", "agronegocio"],
+    title: "🔬 UNESP - Câmpus de Tupã",
+    reply: `A **UNESP Tupã** oferece graduação e pós-graduação públicas e gratuitas de excelência:
 
-- **Cursos de Graduação:**
-  - **Administração com Ênfase em Agronegócio:** Focado na gestão de cooperativas e cadeias produtivas agroindustriais.
-  - **Engenharia de Biossistemas:** Engenharia moderna que une tecnologia, produção agropecuária e sustentabilidade ambiental.
+- **Graduação:** Engenharia de Biossistemas e Administração (ênfase em Agronegócio).
 - **Pós-Graduação:** Mestrado em Agronegócio e Desenvolvimento.
 - **Endereço:** Av. Domingos da Costa Lopes, 780 - Jardim Itaipu.`
   },
 
-  // --- IPTU, IMPOSTOS E ISENÇÃO ---
+  // --- 10. IPTU E TRIBUTOS ---
   {
     id: "iptu",
-    matchers: ["iptu", "segunda via iptu", "carne", "imposto", "impostos", "isencao", "idoso", "aposentado", "divida ativa", "itbi", "tributo"],
+    matchers: ["iptu", "segunda via iptu", "carne", "imposto", "isencao", "idoso", "aposentado", "divida ativa", "itbi"],
     title: "💰 IPTU e Isenção de Impostos em Tupã",
-    reply: `Informações sobre IPTU e tributos na Prefeitura de Tupã:
+    reply: `Serviços de IPTU da Prefeitura de Tupã:
 
-- **2ª Via do IPTU:** Pode ser emitida pela internet no portal oficial ([tupa.sp.gov.br](https://www.tupa.sp.gov.br)) ou na Central 1Doc com o número da inscrição cadastral.
-- **Isenção para Idosos e Aposentados:** Moradores com 65 anos ou mais, ou aposentados com renda comprovada e imóvel único, têm direito à isenção anual do IPTU mediante requerimento na Prefeitura ou pelo 1Doc.
-- **Parcelamento e Dívida Ativa:** Pode ser negociado presencialmente no Paço Municipal ou via protocolo digital.`
+- **2ª Via do IPTU:** Disponível online no portal [tupa.sp.gov.br](https://www.tupa.sp.gov.br) ou pela Central 1Doc com o código do imóvel.
+- **Isenção para Idosos e Aposentados:** Cidadãos com 65 anos ou mais, ou aposentados com um único imóvel e renda comprovada, podem pedir isenção anual pelo protocolo municipal.
+- **Parcelamento:** Negociação presencial no Paço Municipal ou online.`
   },
 
-  // --- PREFEITURA E CENTRAL 1DOC ---
+  // --- 11. PREFEITURA E ATENDIMENTO 1DOC ---
   {
     id: "prefeitura",
-    matchers: ["prefeitura", "paco municipal", "horario prefeitura", "telefone prefeitura", "1doc", "protocolo", "palacio das nacoes", "prefeito", "renan pontelli"],
-    title: "🏛️ Prefeitura Municipal de Tupã",
-    reply: `Dados da Prefeitura da Estância Turística de Tupã:
+    matchers: ["prefeitura", "paco municipal", "horario prefeitura", "telefone prefeitura", "1doc", "protocolo", "renan pontelli"],
+    title: "🏛️ Paço Municipal e Prefeitura de Tupã",
+    reply: `Contatos oficiais da Prefeitura de Tupã:
 
-- **Prefeito Atual:** **Renan Pontelli** (mandato 2025-2028), com a vice-prefeita Joice Berni.
-- **Sede (Paço Municipal):** Praça da Bandeira, nº 800 - Centro.
-- **Telefone Geral:** (14) 3404-1000 | **Atendimento:** Segunda a sexta, das 7h30 às 17h.
-- **Central Digital 1Doc ([tupa.1doc.com.br](https://tupa.1doc.com.br/atendimento)):** Para abrir chamados, pedir certidões e acompanhar protocolos online sem sair de casa.`
+- **Prefeito Atual:** **Renan Pontelli** (mandato 2025-2028).
+- **Sede:** Praça da Bandeira, 800 - Centro. Tel: (14) 3404-1000. Horário: 7h30 às 17h.
+- **Plataforma 1Doc ([tupa.1doc.com.br](https://tupa.1doc.com.br/atendimento)):** Requerimentos, certidões e protocolos digitais sem pegar filas.`
   },
 
-  // --- SAÚDE, HOSPITAIS E UPA ---
-  {
-    id: "saude",
-    matchers: ["hospital", "santa casa", "upa", "medico", "saude", "pronto socorro", "remedio", "farmacia", "samu", "posto de saude", "ubs", "ame"],
-    title: "🏥 Saúde e Hospitais em Tupã",
-    reply: `Principais unidades de atendimento médico e urgência em Tupã:
-
-- **Santa Casa de Tupã:** Hospital geral de referência regional para internações, cirurgias e alta complexidade.
-- **UPA 24 Horas:** Atendimento médico clínico de urgência e emergência 24h por dia.
-- **Hospital São Francisco:** Atendimento hospitalar privado e convênios.
-- **AME Tupã:** Ambulatório Médico com consultas em diversas especialidades e exames.
-- **Secretaria de Saúde:** Rua Caetés, 1200 | WhatsApp: (14) 99854-9157.
-- **Emergências:** SAMU: **192** | Bombeiros: **193**.`
-  },
-
-  // --- VARPA E CULTURA LETÃ ---
+  // --- 12. DISTRITO DE VARPA (LETÔNIA) ---
   {
     id: "varpa",
-    matchers: ["varpa", "letonia", "letoes", "letao", "distrito de varpa", "museu janis", "pao preto", "queijo letao", "balneario", "7 de setembro"],
-    title: "🌾 Distrito de Varpa e a Cultura da Letônia",
-    reply: `**Varpa** é o distrito histórico mais famoso de Tupã, a 25 km do centro:
+    matchers: ["varpa", "letonia", "letoes", "letao", "distrito de varpa", "museu janis", "pao preto", "queijo letao", "balneario"],
+    title: "🌾 Distrito de Varpa e a Cultura Letã",
+    reply: `**Varpa** é o distrito histórico fundado em 1922 por imigrantes da **Letônia** a 25 km de Tupã:
 
-- **Origem:** Fundado em 1922 por imigrantes da Letônia que trouxeram sua fé batista, arquitetura de madeira e hábitos europeus.
-- **Gastronomia Típica:** Pão preto de centeio artesanal, queijo letão com sementes de cominho, biscoitos de mel e tortas caseiras.
-- **Pontos Turísticos:**
-  - *Museu dos Pioneiros de Varpa (Janis Erdbergs):* Acervo e fotos dos pioneiros.
-  - *Balneário 7 de Setembro:* Área verde de lazer natural, riacho para banho e quiosques.`
+- **Gastronomia Típica:** Pão preto de centeio artesanal, queijo letão com cominho e biscoitos de mel (*piparkūkas*).
+- **Atrações:** Museu dos Pioneiros (Janis Erdbergs) e Balneário 7 de Setembro com área verde e águas naturais para banho.`
   },
 
-  // --- MUSEU ÍNDIA VANUÍRE ---
+  // --- 13. MUSEU ÍNDIA VANUÍRE ---
   {
     id: "museu",
-    matchers: ["museu", "india vanuire", "indigena", "kaingang", "krenak", "terena", "rua coroados", "vanuire"],
+    matchers: ["museu", "india vanuire", "indigena", "kaingang", "krenak", "terena", "rua coroados"],
     title: "🏺 Museu Histórico e Pedagógico Índia Vanuíre",
-    reply: `O **Museu Índia Vanuíre** é um dos mais importantes museus etnográficos da América Latina:
+    reply: `Um dos museus etnográficos indígenas mais importantes do continente:
 
-- **Acervo:** Milhares de peças e artefatos dos povos indígenas Kaingang, Krenak e Terena que habitavam a Alta Paulista.
-- **Visitação:** Entrada **gratuita** de terça a domingo.
-- **Endereço:** Rua Coroados, 521 - Centro de Tupã.`
+- **Acervo:** Milhares de peças originais das etnias Kaingang, Krenak e Terena que povoaram a Alta Paulista.
+- **Visitação:** Entrada **gratuita** de terça a domingo. Rua Coroados, 521 - Centro de Tupã.`
   },
 
-  // --- HISTÓRIA E FUNDADOR ---
+  // --- 14. HISTÓRIA E FUNDAÇÃO ---
   {
     id: "historia",
-    matchers: ["historia", "fundacao", "fundador", "luiz de souza leao", "1929", "quando nasceu", "origem", "12 de outubro"],
+    matchers: ["historia", "fundacao", "fundador", "luiz de souza leao", "1929", "quando nasceu", "origem"],
     title: "🏛️ História e Fundação de Tupã",
-    reply: `A história de **Tupã**:
+    reply: `A trajetória de Tupã:
 
-- **Fundação:** Fundada em **12 de outubro de 1929** pelo desbravador **Luiz de Souza Leão**.
-- **Planejamento:** Nasceu com ruas largas desenhadas em formato de tabuleiro de xadrez para receber a ferrovia.
-- **Nome:** Homenageia o Deus do Trovão dos povos Tupi-Guarani e as populações indígenas locais.
-- **Estância Turística:** Conquistou o título em 1997 pela riqueza cultural e atrativos naturais.`
+- **Fundação:** Em **12 de outubro de 1929** por **Luiz de Souza Leão**.
+- **Traçado Planejado:** Ruas e avenidas largas simétricas em tabuleiro de xadrez batizadas com nomes indígenas (Avenida Tamoios, Aimorés, etc.).
+- **Estância Turística:** Reconhecida em 1997 pelo Governo do Estado de SP.`
   },
 
-  // --- RUAS COM NOMES INDÍGENAS ---
-  {
-    id: "ruas_indigenas",
-    matchers: ["ruas", "rua", "nomes indigenas", "tamoios", "aimores", "cherentes", "mandaguaris", "nhambiquaras", "avenida tamoios"],
-    title: "🏹 Ruas com Nomes Indígenas em Tupã",
-    reply: `Em Tupã, as ruas e avenidas do centro histórico homenageiam tribos indígenas do Brasil:
-
-- **Avenida Tamoios:** A principal avenida comercial e financeira da cidade.
-- **Avenida Aimorés:** Grande avenida paralela.
-- **Ruas:** Cherentes, Mandaguaris, Nhambiquaras, Coroados, Caingangs, Potiguaras, Guaranis, Goitacazes, Ubirajaras e Timborés.`
-  },
-
-  // --- EXAPIT E EVENTOS ---
-  {
-    id: "eventos",
-    matchers: ["exapit", "eventos", "festa", "rodeio", "shows", "recinto", "carnaval", "tupa folia", "sao pedro", "quermesse"],
-    title: "🎪 EXAPIT e Grandes Eventos de Tupã",
-    reply: `Os maiores eventos do calendário de Tupã:
-
-- **EXAPIT (Exposição Agropecuária e Industrial):** Realizada todo mês de agosto no Recinto Octávio Barros Castanheira, com rodeio em touros, grandes shows e parque.
-- **Quermesse de São Pedro (29 de Junho):** Tradicional festa do padroeiro na Praça da Matriz.
-- **Tupã Folia:** Um dos maiores carnavais de rua gratuitos do interior paulista na Av. Tamoios.`
-  },
-
-  // --- ECONOMIA E AMENDOIM ---
+  // --- 15. ECONOMIA: CAPITAL NACIONAL DO AMENDOIM ---
   {
     id: "economia",
-    matchers: ["amendoim", "economia", "agronegocio", "capital do amendoim", "industria", "cana", "usina", "agricultura"],
-    title: "🥜 Capital Nacional do Amendoim e Economia",
-    reply: `Tupã é conhecida nacionalmente como a **Capital do Amendoim**:
+    matchers: ["amendoim", "economia", "agronegocio", "capital do amendoim", "cana", "usina"],
+    title: "🥜 Capital Nacional do Amendoim e Agronegócio",
+    reply: `Tupã é o maior polo de produção, beneficiamento e exportação de **amendoim** do Brasil.
 
-- É o maior polo de cultivo, processamento e exportação de amendoim do Brasil.
-- Destaca-se também na produção de cana-de-açúcar, grãos, café e comércio regional consolidado.`
+- Também se destaca no cultivo de cana-de-açúcar, avicultura regional (próxima a Bastos), grãos, café e comércio forte.`
   },
 
-  // --- PAT, EMPREGOS E BANCO DO POVO ---
+  // --- 16. EXAPIT E GRANDES EVENTOS ---
+  {
+    id: "eventos",
+    matchers: ["exapit", "eventos", "festa", "rodeio", "shows", "recinto", "carnaval", "tupa folia", "sao pedro"],
+    title: "🎪 EXAPIT e Grandes Eventos de Tupã",
+    reply: `Grandes festas de Tupã:
+
+- **EXAPIT:** Em agosto no Recinto Octávio Barros Castanheira (shows sertanejos, rodeio e agronegócio).
+- **Quermesse de São Pedro (29 de Junho):** Padroeiro da cidade na Praça da Matriz.
+- **Tupã Folia:** Tradicional carnaval de rua gratuito na Avenida Tamoios.`
+  },
+
+  // --- 17. PAT, VAGAS DE EMPREGO E BANCO DO POVO ---
   {
     id: "trabalho_pat",
-    matchers: ["pat", "emprego", "vagas de emprego", "trabalho", "curriculo", "banco do povo", "procon", "emprestimo"],
+    matchers: ["pat", "emprego", "vagas de emprego", "trabalho", "banco do povo", "procon"],
     title: "💼 PAT (Vagas de Emprego), Banco do Povo e Procon",
-    reply: `Serviços ao trabalhador e ao consumidor em Tupã:
+    reply: `Apoio ao trabalhador em Tupã:
 
-- **PAT (Posto de Atendimento ao Trabalhador):** Divulga vagas abertas diariamente e auxilia no seguro-desemprego e carteira de trabalho digital.
-- **Banco do Povo Paulista:** Microcrédito e empréstimos produtivos com juros reduzidos para MEIs e autônomos.
-- **Procon de Tupã:** Defesa do consumidor e resolução de conflitos com empresas.`
+- **PAT:** Vagas de trabalho abertas no comércio e indústria e carteira digital.
+- **Banco do Povo Paulista:** Microcrédito com juros baixos para autônomos e MEIs.
+- **Procon:** Defesa e orientação ao consumidor.`
   },
 
-  // --- ZOONOSES E CASTRAÇÃO ---
-  {
-    id: "zoonoses",
-    matchers: ["castracao", "castrar", "zoonoses", "cachorro", "gato", "animais", "vacina cachorro", "dengue"],
-    title: "🐾 Zoonoses e Castração Gratuita de Animais",
-    reply: `Serviços de proteção animal e zoonoses da Prefeitura:
-
-- **Castração Gratuita:** Programa municipal de esterilização de cães e gatos. Solicitação pelo portal **[tupa.1doc.com.br](https://tupa.1doc.com.br/atendimento)**.
-- **Vacinação Antirrábica:** Campanhas anuais gratuitas na cidade e distritos.
-- **Vigilância e Dengue:** Equipes de combate a focos de mosquitos e escorpiões.`
-  },
-
-  // --- ILUMINAÇÃO PÚBLICA ---
-  {
-    id: "iluminacao",
-    matchers: ["lampada", "poste", "iluminacao", "luz queimada", "troca de lampada", "escuridao", "lampada queimada"],
-    title: "💡 Iluminação Pública (Troca de Lâmpadas)",
-    reply: `Como solicitar troca de lâmpadas de postes em Tupã:
-
-1. Acesse o portal **[tupa.1doc.com.br](https://tupa.1doc.com.br/atendimento)** ou ligue para a Prefeitura: **(14) 3404-1000**.
-2. Forneça o nome da rua, número da casa em frente ao poste e bairro.
-3. A equipe de manutenção realiza o conserto no cronograma de rotas dos bairros.`
-  },
-
-  // --- DADOS GERAIS, POPULAÇÃO E LOCALIZAÇÃO ---
+  // --- 18. DADOS GERAIS E POPULAÇÃO ---
   {
     id: "dados_gerais",
-    matchers: ["populacao", "habitantes", "quantos moradores", "onde fica", "localizacao", "cep", "ddd", "clima", "distancia"],
+    matchers: ["populacao", "habitantes", "quantos moradores", "onde fica", "cep", "ddd", "clima"],
     title: "📍 Dados Gerais e População de Tupã",
-    reply: `Principais dados sobre a cidade:
+    reply: `Informações demográficas de Tupã:
 
 - **População:** Cerca de 65.000 habitantes.
-- **Localização:** Região da Alta Paulista / Centro-Oeste de SP (a 514 km da capital pela SP-294).
-- **DDD:** 14 | **CEP Geral:** 17600-000 | **Altitude:** 510 metros.
-- **Distritos:** Varpa, Parnaso e Universo.`
+- **Localização:** Região da Alta Paulista / Centro-Oeste Paulista (a 514 km de SP via SP-294).
+- **DDD:** 14 | **CEP Geral:** 17600-000 | **Altitude:** 510 metros.`
   }
 ];
 
-// Motor de busca inteligente por intenção (evita desconexão)
+// Motor de busca de alta precisão por intenção
 function findLocalKnowledge(query) {
   if (!query || typeof query !== "string") return null;
 
@@ -254,11 +272,9 @@ function findLocalKnowledge(query) {
 
     for (const matcher of topic.matchers) {
       const cleanM = clean(matcher);
-      // Se a pergunta contém exatamente o termo chave
       if (cleanQuery.includes(cleanM)) {
         score += 8;
       }
-      // Se palavras individuais coincidem
       for (const w of words) {
         if (w === cleanM) {
           score += 4;
@@ -272,6 +288,5 @@ function findLocalKnowledge(query) {
     }
   }
 
-  // Só retorna se tiver confiança real (evita respostas desconexas!)
   return maxScore >= 6 ? bestMatch : null;
 }

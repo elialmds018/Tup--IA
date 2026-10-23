@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TupãIA — Inteligência & Guia de Tupã - SP</title>
+  <title>TupãIA — Inteligência & Estatísticas de Tupã - SP</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
 </head>
 <body>
 
   <div class="app-container">
-    <!-- Barra Lateral -->
+    <!-- Barra Lateral Preto & Azul -->
     <aside class="sidebar" id="sidebar">
       <div class="brand">
         <div class="brand-icon">⚡</div>
@@ -20,10 +20,25 @@
         </div>
       </div>
 
-      <div class="sidebar-title">Guia Rápido</div>
+      <div class="sidebar-title">Estatísticas & Cidade</div>
       <div class="suggested-topics">
+        <button class="topic-item" data-query="Qual é a renda média dos tupãenses e o salário médio em Tupã?">
+          <span class="icon">💰</span> Renda dos Moradores
+        </button>
+        <button class="topic-item" data-query="Como anda a área da saúde em Tupã, a Santa Casa, leitos e UPA?">
+          <span class="icon">🩺</span> Como Anda a Saúde
+        </button>
+        <button class="topic-item" data-query="Quais são os dados de PIB, IDHM e indicadores do IBGE sobre Tupã?">
+          <span class="icon">📊</span> PIB & Indicadores IBGE
+        </button>
+        <button class="topic-item" data-query="Qual é o orçamento anual da Prefeitura de Tupã e onde é gasto?">
+          <span class="icon">🏛️</span> Orçamento da Prefeitura
+        </button>
+        <button class="topic-item" data-query="Como são as notas das escolas de Tupã no IDEB e a qualidade da educação?">
+          <span class="icon">📚</span> Educação & IDEB
+        </button>
         <button class="topic-item" data-query="Onde comer em Tupã? Fale sobre restaurantes, Água Doce e gastronomia.">
-          <span class="icon">🍽️</span> Onde Comer & Noite
+          <span class="icon">🍽️</span> Onde Comer & Gastronomia
         </button>
         <button class="topic-item" data-query="O que é o Eco Thermas Tupã e quais atrações tem no parque de águas quentes?">
           <span class="icon">🌊</span> Eco Thermas (Águas Quentes)
@@ -31,29 +46,14 @@
         <button class="topic-item" data-query="Fale sobre a UniFADAP, seus cursos e importância em Tupã.">
           <span class="icon">🎓</span> UniFADAP (Faculdades)
         </button>
-        <button class="topic-item" data-query="Como é o Câmpus da UNESP em Tupã e quais cursos oferece?">
-          <span class="icon">🔬</span> UNESP Câmpus Tupã
-        </button>
         <button class="topic-item" data-query="Conte sobre o Distrito de Varpa, a imigração da Letônia e comidas típicas.">
           <span class="icon">🌾</span> Distrito de Varpa (Letônia)
         </button>
-        <button class="topic-item" data-query="O que ver no Museu Índia Vanuíre e qual seu acervo?">
-          <span class="icon">🏺</span> Museu Índia Vanuíre
-        </button>
         <button class="topic-item" data-query="Como tirar 2ª via do IPTU e como funciona a isenção para idosos e aposentados?">
-          <span class="icon">💰</span> IPTU & Isenção de Imposto
-        </button>
-        <button class="topic-item" data-query="Onde fica o Paço Municipal da Prefeitura, telefone e como usar o 1Doc?">
-          <span class="icon">🏛️</span> Prefeitura & 1Doc
+          <span class="icon">🪙</span> IPTU & Isenções
         </button>
         <button class="topic-item" data-query="Onde fica o PAT para vagas de emprego, o Banco do Povo e o Procon em Tupã?">
           <span class="icon">💼</span> PAT & Vagas de Emprego
-        </button>
-        <button class="topic-item" data-query="Como solicitar castração gratuita de animais e vacinação no setor de Zoonoses?">
-          <span class="icon">🐾</span> Zoonoses & Castração
-        </button>
-        <button class="topic-item" data-query="Fale sobre o Estádio Municipal Alonso Carvalho Braga (Alonsão) e o Tupã Futebol Clube.">
-          <span class="icon">⚽</span> Estádio Alonsão (Tupã F.C.)
         </button>
         <button class="topic-item" data-query="Conte a história da fundação de Tupã em 1929 e quem foi Luiz de Souza Leão.">
           <span class="icon">🏛️</span> História e Fundação
@@ -81,7 +81,7 @@
           <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">☰</button>
           <div class="header-info">
             <h2>TupãIA • Especialista na Estância Turística</h2>
-            <p>Respostas diretas e precisas sobre Tupã - SP</p>
+            <p>Estatísticas de renda, saúde, educação, economia e turismo de Tupã - SP</p>
           </div>
         </div>
         <div class="header-badge">Estância Turística</div>
@@ -92,39 +92,39 @@
         <!-- Cartão Hero Inicial -->
         <div class="hero-card" id="heroCard">
           <div class="hero-icon">⚡</div>
-          <h3>Como posso ajudar você em Tupã?</h3>
-          <p>Seu assistente inteligente para turismo, gastronomia, faculdades, história e serviços da Prefeitura.</p>
+          <h3>TupãIA • O que você deseja consultar?</h3>
+          <p>Base com dados oficiais coletados do IBGE, DataSUS, Fundação SEADE, QEdu e Prefeitura.</p>
           
           <div class="hero-grid">
-            <div class="hero-btn" data-query="Onde comer em Tupã? Fale sobre restaurantes, Água Doce e gastronomia.">
-              <span class="emoji">🍽️</span>
+            <div class="hero-btn" data-query="Qual é a renda média dos tupãenses e o salário médio em Tupã?">
+              <span class="emoji">💰</span>
               <div>
-                <div class="hero-btn-title">Onde Comer</div>
-                <div class="hero-btn-desc">Restaurantes, Água Doce & cafés</div>
+                <div class="hero-btn-title">Renda dos Tupãenses</div>
+                <div class="hero-btn-desc">Salário médio (~2 salários), IBGE & CAGED</div>
               </div>
             </div>
 
-            <div class="hero-btn" data-query="O que é o Eco Thermas Tupã e quais atrações tem no parque de águas quentes?">
-              <span class="emoji">🌊</span>
+            <div class="hero-btn" data-query="Como anda a área da saúde em Tupã, a Santa Casa, leitos e UPA?">
+              <span class="emoji">🩺</span>
               <div>
-                <div class="hero-btn-title">Eco Thermas</div>
-                <div class="hero-btn-desc">Águas quentes, toboáguas & lazer</div>
+                <div class="hero-btn-title">Como Anda a Saúde</div>
+                <div class="hero-btn-desc">Santa Casa, UTI SUS, UPA & SEADE</div>
               </div>
             </div>
 
-            <div class="hero-btn" data-query="Fale sobre a UniFADAP, seus cursos e importância em Tupã.">
-              <span class="emoji">🎓</span>
+            <div class="hero-btn" data-query="Quais são os dados de PIB, IDHM e indicadores do IBGE sobre Tupã?">
+              <span class="emoji">📊</span>
               <div>
-                <div class="hero-btn-title">UniFADAP & Ensino</div>
-                <div class="hero-btn-desc">Direito, saúde & universidades</div>
+                <div class="hero-btn-title">PIB & IDHM Oficial</div>
+                <div class="hero-btn-desc">IDHM 0,771 e PIB de R$ 38 a 48 mil per capita</div>
               </div>
             </div>
 
-            <div class="hero-btn" data-query="Como tirar 2ª via do IPTU e como funciona a isenção para idosos e aposentados?">
+            <div class="hero-btn" data-query="Qual é o orçamento anual da Prefeitura de Tupã e onde é gasto?">
               <span class="emoji">🏛️</span>
               <div>
-                <div class="hero-btn-title">Prefeitura & IPTU</div>
-                <div class="hero-btn-desc">Serviços 1Doc, tributos & prazos</div>
+                <div class="hero-btn-title">Orçamento Municipal</div>
+                <div class="hero-btn-desc">R$ 409M a R$ 432M (Saúde & Educação)</div>
               </div>
             </div>
           </div>
@@ -138,7 +138,7 @@
             type="text" 
             class="chat-input-field" 
             id="userInput" 
-            placeholder="Pergunte algo sobre Tupã (ex: onde comer, Eco Thermas, UniFADAP, IPTU)..." 
+            placeholder="Pergunte sobre renda, saúde, PIB, escolas, Eco Thermas ou serviços..." 
             autocomplete="off"
             required
           >
@@ -153,7 +153,7 @@
     </main>
   </div>
 
-  <!-- Modal de Configuração da API Gemini -->
+  <!-- Modal de Configuração Preto & Azul -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-box">
       <div class="modal-header">
@@ -172,7 +172,7 @@
           >
           <p style="font-size: 0.75rem; color: #94a3b8; line-height: 1.4; margin-top: 4px;">
             Obtenha sua chave gratuita em 
-            <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color: #60a5fa;">Google AI Studio</a>.
+            <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color: #38bdf8;">Google AI Studio</a>.
             <br><em>Sua chave fica gravada apenas no seu navegador.</em>
           </p>
         </div>
