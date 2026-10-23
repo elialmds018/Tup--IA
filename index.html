@@ -16,7 +16,7 @@
         <div class="brand-icon">⚡</div>
         <div class="brand-text">
           <h1>TupãIA</h1>
-          <span>Especialista em Tupã - SP</span>
+          <span>Enciclopédia de Tupã - SP</span>
         </div>
       </div>
 
@@ -25,11 +25,17 @@
         <button class="topic-chip" data-query="Conte a história da fundação de Tupã e quem foi Luiz de Souza Leão.">
           <span>🏛️</span> História e Fundação
         </button>
+        <button class="topic-chip" data-query="Por que as ruas de Tupã têm nomes indígenas como Tamoios e Aimorés?">
+          <span>🏹</span> Ruas com Nomes Indígenas
+        </button>
         <button class="topic-chip" data-query="Fale sobre a UniFADAP, seus cursos e importância em Tupã.">
           <span>🎓</span> UniFADAP (Faculdades)
         </button>
         <button class="topic-chip" data-query="Como é o Câmpus da UNESP em Tupã e quais cursos oferece?">
           <span>🔬</span> UNESP Câmpus Tupã
+        </button>
+        <button class="topic-chip" data-query="O que é o Eco Thermas Tupã e quais atrações tem no parque aquático?">
+          <span>🌊</span> Eco Thermas (Águas Quentes)
         </button>
         <button class="topic-chip" data-query="O que ver no Museu Índia Vanuíre e qual seu acervo?">
           <span>🏺</span> Museu Índia Vanuíre
@@ -37,18 +43,27 @@
         <button class="topic-chip" data-query="Conte sobre o Distrito de Varpa, a imigração letã e suas atrações.">
           <span>🌾</span> Distrito de Varpa (Letônia)
         </button>
-        <button class="topic-chip" data-query="Quais os principais pontos turísticos para visitar em Tupã?">
-          <span>🌳</span> Turismo e Praça da Bandeira
+        <button class="topic-chip" data-query="Onde comer em Tupã? Fale sobre restaurantes, Água Doce e gastronomia.">
+          <span>🍽️</span> Onde Comer & Gastronomia
+        </button>
+        <button class="topic-chip" data-query="Como funciona a EXAPIT e quais as principais festas da cidade?">
+          <span>🎪</span> EXAPIT e Grandes Festas
         </button>
         <button class="topic-chip" data-query="Como funciona a economia de Tupã e o título de capital do amendoim?">
           <span>🥜</span> Economia e Amendoim
+        </button>
+        <button class="topic-chip" data-query="Quais são os hospitais, Santa Casa e telefones de emergência em Tupã?">
+          <span>🏥</span> Saúde e Emergências
+        </button>
+        <button class="topic-chip" data-query="Quem é o atual prefeito de Tupã e onde fica a Prefeitura?">
+          <span>🏛️</span> Prefeitura & Gestão
         </button>
       </div>
 
       <div class="sidebar-footer">
         <div class="status-badge">
           <span class="status-dot local" id="statusDot"></span>
-          <span id="statusText">Modo Base Local</span>
+          <span id="statusText">Base Local Ativa</span>
         </div>
         <button class="btn-secondary" id="btnOpenSettings">
           <span>⚙️</span> Configurar API Gemini
@@ -65,8 +80,8 @@
         <div style="display: flex; align-items: center; gap: 12px;">
           <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">☰</button>
           <div class="header-info">
-            <h2>TupãIA • Inteligência da Alta Paulista</h2>
-            <p>História, cultura, ensino superior, turismo e cotidiano de Tupã - SP</p>
+            <h2>TupãIA • A Inteligência da Alta Paulista</h2>
+            <p>História, faculdades, Eco Thermas, cultura, distritos e tudo sobre Tupã - SP</p>
           </div>
         </div>
       </header>
@@ -83,7 +98,7 @@
             type="text" 
             class="chat-input" 
             id="userInput" 
-            placeholder="Pergunte qualquer coisa sobre Tupã, SP (ex: história, UniFADAP, Varpa)..." 
+            placeholder="Pergunte qualquer coisa sobre Tupã, SP (ex: Eco Thermas, UniFADAP, Varpa, história)..." 
             autocomplete="off"
             required
           >
