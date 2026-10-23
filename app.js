@@ -1,5 +1,5 @@
 // TupãIA - Lógica Principal do Assistente Web
-// Design Moderno & Respostas Diretas sobre Tupã - SP
+// Conversação Natural e Respostas Conexas sobre Tupã - SP
 
 let conversationHistory = [];
 
@@ -20,7 +20,7 @@ const btnClearChat = document.getElementById('btnClearChat');
 const menuToggle = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
 
-// Carregar configurações
+// Carregar configurações salvas
 function loadSettings() {
   const savedKey = localStorage.getItem('tupa_gemini_api_key') || '';
   const savedModel = localStorage.getItem('tupa_gemini_model') || 'gemini-1.5-flash';
@@ -37,7 +37,7 @@ function updateStatus(key, model) {
     statusText.innerText = `Online: ${model}`;
   } else {
     statusDot.className = 'status-dot local';
-    statusText.innerText = 'Base Local Ativa';
+    statusText.innerText = 'Cérebro Conversacional Ativo';
   }
 }
 
@@ -56,8 +56,8 @@ settingsForm.addEventListener('submit', (e) => {
   if (heroCard) heroCard.style.display = 'none';
   appendBotMessage(
     `⚙️ **Configurações salvas!**\n\n` +
-    (key ? `🟢 Conexão com Google Gemini ativada! Pode perguntar qualquer assunto.` 
-         : `⚡ Operando no modo Base Local Inteligente.`)
+    (key ? `🟢 Conexão com Google Gemini ativada! Pode conversar livremente.` 
+         : `⚡ Cérebro conversacional ativo com dados de Tupã!`)
   );
 });
 
@@ -88,13 +88,13 @@ btnClearChat.addEventListener('click', () => {
 // Renderização limpa de Markdown
 function formatMarkdown(text) {
   let html = text
-    .replace(/^### (.*$)/gim, '<h4 style="margin: 8px 0 4px 0; color: #60a5fa; font-weight: 700;">$1</h4>')
-    .replace(/^## (.*$)/gim, '<h3 style="margin: 10px 0 6px 0; color: #60a5fa; font-weight: 700;">$1</h3>')
-    .replace(/^# (.*$)/gim, '<h2 style="margin: 12px 0 8px 0; color: #60a5fa; font-weight: 700;">$1</h2>')
+    .replace(/^### (.*$)/gim, '<h4 style="margin: 8px 0 4px 0; color: #38bdf8; font-weight: 700;">$1</h4>')
+    .replace(/^## (.*$)/gim, '<h3 style="margin: 10px 0 6px 0; color: #38bdf8; font-weight: 700;">$1</h3>')
+    .replace(/^# (.*$)/gim, '<h2 style="margin: 12px 0 8px 0; color: #38bdf8; font-weight: 700;">$1</h2>')
     .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/gim, '<em>$1</em>')
-    .replace(/```([\s\S]*?)```/gim, '<pre style="background: rgba(0,0,0,0.4); padding: 8px; border-radius: 6px; overflow-x: auto; margin: 6px 0;"><code>$1</code></pre>')
-    .replace(/`([^`]+)`/gim, '<code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: #f59e0b;">$1</code>')
+    .replace(/```([\s\S]*?)```/gim, '<pre style="background: rgba(0,0,0,0.5); padding: 8px; border-radius: 6px; overflow-x: auto; margin: 6px 0;"><code>$1</code></pre>')
+    .replace(/`([^`]+)`/gim, '<code style="background: rgba(0,102,255,0.2); padding: 2px 6px; border-radius: 4px; color: #38bdf8;">$1</code>')
     .replace(/^\s*-\s+(.*$)/gim, '<li style="margin-left: 18px; margin-bottom: 4px;">$1</li>')
     .replace(/\n\n/gim, '<br><br>')
     .replace(/\n/gim, '<br>');
@@ -121,7 +121,7 @@ function appendBotMessage(text, isInstant = false) {
 
   const msgDiv = document.createElement('div');
   msgDiv.className = 'message bot';
-  const badge = isInstant ? `<div class="badge-tag">⚡ Resposta Instantânea</div>` : '';
+  const badge = isInstant ? `<div class="badge-tag">⚡ TupãIA</div>` : '';
   msgDiv.innerHTML = `
     <div class="msg-avatar">⚡</div>
     <div class="msg-bubble">
@@ -154,8 +154,8 @@ async function callGeminiAPI(prompt, apiKey, model) {
     },
     contents: contents,
     generationConfig: {
-      temperature: 0.6,
-      maxOutputTokens: 1000
+      temperature: 0.7,
+      maxOutputTokens: 1200
     }
   };
 
@@ -190,7 +190,7 @@ chatForm.addEventListener('submit', async (e) => {
   const model = localStorage.getItem('tupa_gemini_model') || 'gemini-1.5-flash';
 
   if (apiKey && apiKey.trim().length > 10) {
-    const loadingBubble = appendBotMessage('⌛ *Pesquisando sobre Tupã...*');
+    const loadingBubble = appendBotMessage('⌛ *Pensando...*');
     try {
       const reply = await callGeminiAPI(text, apiKey, model);
       loadingBubble.querySelector('.msg-bubble').innerHTML = formatMarkdown(reply);
@@ -198,28 +198,14 @@ chatForm.addEventListener('submit', async (e) => {
       conversationHistory.push({ role: 'model', text: reply });
     } catch (err) {
       console.warn('Erro API Gemini:', err);
-      const match = findLocalKnowledge(text);
-      if (match) {
-        loadingBubble.querySelector('.msg-bubble').innerHTML = formatMarkdown(`### ${match.title}\n\n${match.reply}`);
-      } else {
-        loadingBubble.querySelector('.msg-bubble').innerHTML = formatMarkdown(`⚠️ **Erro na conexão:** ${err.message}\n\nVerifique sua chave no botão **Configurações ⚙️**.`);
-      }
+      const conv = getConversationalResponse(text);
+      loadingBubble.querySelector('.msg-bubble').innerHTML = formatMarkdown(`### ${conv.title}\n\n${conv.reply}`);
     }
   } else {
-    // Modo Base Local Super Preciso
-    const match = findLocalKnowledge(text);
-
-    if (match) {
-      appendBotMessage(`### ${match.title}\n\n${match.reply}`, true);
-    } else {
-      const fallback = `Não encontrei informações específicas sobre esse termo na busca rápida.\n\n` +
-        `💡 **Experimente perguntar sobre temas como:**\n` +
-        `- **Gastronomia:** Onde comer, restaurantes, lanches\n` +
-        `- **Lazer:** Eco Thermas, Museu Índia Vanuíre, Varpa\n` +
-        `- **Educação:** UniFADAP, UNESP, ETEC\n` +
-        `- **Serviços:** IPTU, Prefeitura, Saúde, Zoonoses, PAT\n\n` +
-        `*Ou clique nas opções do menu lateral para navegar diretamente!*`;
-      appendBotMessage(fallback, true);
+    // Motor Conversacional Fluido e Conexo
+    const conv = getConversationalResponse(text);
+    if (conv) {
+      appendBotMessage(`### ${conv.title}\n\n${conv.reply}`, true);
     }
   }
 
