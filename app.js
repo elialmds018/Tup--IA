@@ -1,5 +1,5 @@
 // TupãIA - Lógica Principal do Assistente Web
-// Especialista na Estância Turística de Tupã - SP
+// Design Moderno & Respostas Diretas sobre Tupã - SP
 
 let conversationHistory = [];
 
@@ -7,6 +7,7 @@ let conversationHistory = [];
 const chatMessages = document.getElementById('chatMessages');
 const chatForm = document.getElementById('chatForm');
 const userInput = document.getElementById('userInput');
+const heroCard = document.getElementById('heroCard');
 const settingsModal = document.getElementById('settingsModal');
 const btnOpenSettings = document.getElementById('btnOpenSettings');
 const btnCloseSettings = document.getElementById('btnCloseSettings');
@@ -19,7 +20,7 @@ const btnClearChat = document.getElementById('btnClearChat');
 const menuToggle = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
 
-// Carregar configurações salvas
+// Carregar configurações
 function loadSettings() {
   const savedKey = localStorage.getItem('tupa_gemini_api_key') || '';
   const savedModel = localStorage.getItem('tupa_gemini_model') || 'gemini-1.5-flash';
@@ -36,7 +37,7 @@ function updateStatus(key, model) {
     statusText.innerText = `Online: ${model}`;
   } else {
     statusDot.className = 'status-dot local';
-    statusText.innerText = '⚡ Base Local Ativa (Respostas Instantâneas)';
+    statusText.innerText = 'Base Local Ativa';
   }
 }
 
@@ -52,10 +53,11 @@ settingsForm.addEventListener('submit', (e) => {
   updateStatus(key, model);
   settingsModal.classList.remove('active');
   
+  if (heroCard) heroCard.style.display = 'none';
   appendBotMessage(
-    `⚙️ **Configurações salvas com sucesso!**\n\n` +
-    (key ? `🟢 **Conexão com Google Gemini ativada!** Agora o TupãIA pode responder qualquer pergunta livre com raciocínio contextual.` 
-         : `⚡ **Modo Base Local ativo.** Você pode consultar tudo sobre Tupã instantaneamente!`)
+    `⚙️ **Configurações salvas!**\n\n` +
+    (key ? `🟢 Conexão com Google Gemini ativada! Pode perguntar qualquer assunto.` 
+         : `⚡ Operando no modo Base Local Inteligente.`)
   );
 });
 
@@ -73,68 +75,57 @@ if (menuToggle) {
   });
 }
 
-// Limpar conversa
+// Nova conversa / Limpar chat
 btnClearChat.addEventListener('click', () => {
-  if (confirm('Deseja limpar todo o histórico da conversa?')) {
-    conversationHistory = [];
-    chatMessages.innerHTML = '';
-    renderWelcomeMessage();
+  conversationHistory = [];
+  chatMessages.innerHTML = '';
+  if (heroCard) {
+    chatMessages.appendChild(heroCard);
+    heroCard.style.display = 'block';
   }
 });
 
-// Mensagem inicial de boas-vindas
-function renderWelcomeMessage() {
-  appendBotMessage(
-    `👋 **Olá! Eu sou o TupãIA**, a maior inteligência e enciclopédia sobre a Estância Turística de **Tupã - SP**!\n\n` +
-    `Fui alimentado com dados completos sobre tudo o que existe na nossa cidade:\n` +
-    `- 🏛️ **História & Fundação** (Luiz de Souza Leão, 1929, ruas com nomes indígenas)\n` +
-    `- 🎓 **Ensino Superior** (**UniFADAP** / Faccat, UNESP Câmpus de Tupã e ETEC)\n` +
-    `- 🌊 **Turismo & Lazer** (Eco Thermas com águas quentes, Museu Índia Vanuíre, Bosque e Praça da Bandeira)\n` +
-    `- 🌾 **Distritos** (Varpa e a colônia da Letônia, Universo e Parnaso)\n` +
-    `- 🥜 **Economia & Agronegócio** (Capital Nacional do Amendoim, comércio e indústrias)\n` +
-    `- 🍽️ **Gastronomia & Eventos** (Água Doce / Museu da Cachaça, EXAPIT e Quermesse de São Pedro)\n` +
-    `- 🏥 **Saúde & Telefones** (Santa Casa, UPA 24h, SAMU e Prefeitura)\n\n` +
-    `Pergunte o que desejar sobre Tupã abaixo ou clique em um dos temas ao lado!`
-  );
-}
-
-// Renderização de Markdown para HTML
+// Renderização limpa de Markdown
 function formatMarkdown(text) {
   let html = text
-    .replace(/^### (.*$)/gim, '<h3 style="margin: 10px 0 6px 0; color: #ffcc66; font-size: 1.1rem;">$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2 style="margin: 12px 0 8px 0; color: #ffcc66; font-size: 1.25rem;">$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1 style="margin: 14px 0 10px 0; color: #ffcc66; font-size: 1.4rem;">$1</h1>')
+    .replace(/^### (.*$)/gim, '<h4 style="margin: 8px 0 4px 0; color: #60a5fa; font-weight: 700;">$1</h4>')
+    .replace(/^## (.*$)/gim, '<h3 style="margin: 10px 0 6px 0; color: #60a5fa; font-weight: 700;">$1</h3>')
+    .replace(/^# (.*$)/gim, '<h2 style="margin: 12px 0 8px 0; color: #60a5fa; font-weight: 700;">$1</h2>')
     .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/gim, '<em>$1</em>')
-    .replace(/```([\s\S]*?)```/gim, '<pre style="background: rgba(0,0,0,0.35); padding: 10px; border-radius: 6px; overflow-x: auto; margin: 8px 0;"><code>$1</code></pre>')
-    .replace(/`([^`]+)`/gim, '<code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: #f39c12;">$1</code>')
-    .replace(/^\s*-\s+(.*$)/gim, '<li style="margin-left: 20px; margin-bottom: 4px;">$1</li>')
+    .replace(/```([\s\S]*?)```/gim, '<pre style="background: rgba(0,0,0,0.4); padding: 8px; border-radius: 6px; overflow-x: auto; margin: 6px 0;"><code>$1</code></pre>')
+    .replace(/`([^`]+)`/gim, '<code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: #f59e0b;">$1</code>')
+    .replace(/^\s*-\s+(.*$)/gim, '<li style="margin-left: 18px; margin-bottom: 4px;">$1</li>')
     .replace(/\n\n/gim, '<br><br>')
     .replace(/\n/gim, '<br>');
   return html;
 }
 
-// Inserir mensagem do usuário
+// Mensagem do usuário
 function appendUserMessage(text) {
+  if (heroCard) heroCard.style.display = 'none';
+
   const msgDiv = document.createElement('div');
   msgDiv.className = 'message user';
   msgDiv.innerHTML = `
-    <div class="message-avatar">👤</div>
-    <div class="message-bubble">${formatMarkdown(text)}</div>
+    <div class="msg-avatar">👤</div>
+    <div class="msg-bubble">${formatMarkdown(text)}</div>
   `;
   chatMessages.appendChild(msgDiv);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// Inserir mensagem do bot
+// Mensagem do bot
 function appendBotMessage(text, isInstant = false) {
+  if (heroCard) heroCard.style.display = 'none';
+
   const msgDiv = document.createElement('div');
   msgDiv.className = 'message bot';
-  const instantBadge = isInstant ? `<div style="font-size: 0.72rem; color: #f39c12; margin-bottom: 6px; font-weight: 600;">⚡ RESPOSTA INSTANTÂNEA DA BASE LOCAL</div>` : '';
+  const badge = isInstant ? `<div class="badge-tag">⚡ Resposta Instantânea</div>` : '';
   msgDiv.innerHTML = `
-    <div class="message-avatar">⚡</div>
-    <div class="message-bubble">
-      ${instantBadge}
+    <div class="msg-avatar">⚡</div>
+    <div class="msg-bubble">
+      ${badge}
       ${formatMarkdown(text)}
     </div>
   `;
@@ -163,8 +154,8 @@ async function callGeminiAPI(prompt, apiKey, model) {
     },
     contents: contents,
     generationConfig: {
-      temperature: 0.7,
-      maxOutputTokens: 1200
+      temperature: 0.6,
+      maxOutputTokens: 1000
     }
   };
 
@@ -181,12 +172,12 @@ async function callGeminiAPI(prompt, apiKey, model) {
 
   const data = await response.json();
   const botText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!botText) throw new Error('A IA não retornou texto na resposta.');
+  if (!botText) throw new Error('A IA não retornou texto.');
   
   return botText;
 }
 
-// Lidar com envio de mensagens
+// Envio de formulário
 chatForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const text = userInput.value.trim();
@@ -198,66 +189,61 @@ chatForm.addEventListener('submit', async (e) => {
   const apiKey = localStorage.getItem('tupa_gemini_api_key');
   const model = localStorage.getItem('tupa_gemini_model') || 'gemini-1.5-flash';
 
-  // Se tiver API Key, consulta o Gemini
   if (apiKey && apiKey.trim().length > 10) {
-    const loadingBubble = appendBotMessage('⌛ *Consultando o cérebro de IA sobre Tupã...*');
+    const loadingBubble = appendBotMessage('⌛ *Pesquisando sobre Tupã...*');
     try {
       const reply = await callGeminiAPI(text, apiKey, model);
-      loadingBubble.querySelector('.message-bubble').innerHTML = formatMarkdown(reply);
+      loadingBubble.querySelector('.msg-bubble').innerHTML = formatMarkdown(reply);
       conversationHistory.push({ role: 'user', text: text });
       conversationHistory.push({ role: 'model', text: reply });
     } catch (err) {
-      console.warn('Erro na API Gemini, buscando na base local:', err);
-      const localMatch = findLocalKnowledge(text);
-      let replyContent = '';
-      if (localMatch) {
-        replyContent = `⚠️ *Erro na chave da API, recuperando dados da base local offline:*\n\n` +
-                       `### ${localMatch.title}\n\n${localMatch.content}`;
+      console.warn('Erro API Gemini:', err);
+      const match = findLocalKnowledge(text);
+      if (match) {
+        loadingBubble.querySelector('.msg-bubble').innerHTML = formatMarkdown(`### ${match.title}\n\n${match.reply}`);
       } else {
-        replyContent = `⚠️ **Erro na conexão com a API:** ${err.message}\n\nVerifique sua chave no menu de configurações ⚙️.`;
+        loadingBubble.querySelector('.msg-bubble').innerHTML = formatMarkdown(`⚠️ **Erro na conexão:** ${err.message}\n\nVerifique sua chave no botão **Configurações ⚙️**.`);
       }
-      loadingBubble.querySelector('.message-bubble').innerHTML = formatMarkdown(replyContent);
     }
   } else {
-    // Modo Base Local Super Veloz (Instantâneo)
-    const localMatch = findLocalKnowledge(text);
+    // Modo Base Local Super Preciso
+    const match = findLocalKnowledge(text);
 
-    if (localMatch) {
-      const reply = `### ${localMatch.title}\n\n${localMatch.content}\n\n---\n*💡 Dica: Para conversar livremente em tempo real com raciocínio expandido, você pode adicionar a chave gratuita do Google Gemini nas Configurações ⚙️.*`;
-      appendBotMessage(reply, true);
+    if (match) {
+      appendBotMessage(`### ${match.title}\n\n${match.reply}`, true);
     } else {
-      // Resumo inteligente orientando sobre o que pesquisar
-      const guideReply = `Não encontrei um tópico exato para esse termo específico na busca rápida.\n\n` +
-        `📚 **Você pode me perguntar sobre:**\n` +
-        `- **História:** Fundação em 1929, Luiz de Souza Leão, ruas com nomes indígenas\n` +
-        `- **Educação:** UniFADAP, UNESP, ETEC Massuyuki Kawano\n` +
-        `- **Turismo & Lazer:** Eco Thermas (parque aquático), Museu Índia Vanuíre, Bosque, Praça da Bandeira\n` +
-        `- **Distritos:** Varpa (cultura letã, queijo e pão preto), Universo, Parnaso\n` +
-        `- **Economia:** Capital do Amendoim, cana-de-açúcar, avicultura\n` +
-        `- **Saúde & Telefones:** Santa Casa, UPA 24h, Bombeiros (193), SAMU (192)\n` +
-        `- **Prefeitura:** Prefeito Renan Pontelli, Palácio das Nações\n\n` +
-        `👉 *Dica de ouro:* Adicione sua chave gratuita do [Google AI Studio](https://aistudio.google.com/app/apikey) nas **Configurações ⚙️** para a IA responder absolutamente qualquer pergunta sem limites!`;
-      appendBotMessage(guideReply, true);
+      const fallback = `Não encontrei informações específicas sobre esse termo na busca rápida.\n\n` +
+        `💡 **Experimente perguntar sobre temas como:**\n` +
+        `- **Gastronomia:** Onde comer, restaurantes, lanches\n` +
+        `- **Lazer:** Eco Thermas, Museu Índia Vanuíre, Varpa\n` +
+        `- **Educação:** UniFADAP, UNESP, ETEC\n` +
+        `- **Serviços:** IPTU, Prefeitura, Saúde, Zoonoses, PAT\n\n` +
+        `*Ou clique nas opções do menu lateral para navegar diretamente!*`;
+      appendBotMessage(fallback, true);
     }
   }
 
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
-// Clique nos tópicos sugeridos
-document.querySelectorAll('.topic-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    const query = chip.getAttribute('data-query');
-    if (query) {
-      userInput.value = query;
-      chatForm.dispatchEvent(new Event('submit'));
-      if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
-        sidebar.classList.remove('open');
+// Clique nos botões de tópicos da sidebar e nos botões do Hero
+function attachClickHandlers(selector) {
+  document.querySelectorAll(selector).forEach(btn => {
+    btn.addEventListener('click', () => {
+      const query = btn.getAttribute('data-query');
+      if (query) {
+        userInput.value = query;
+        chatForm.dispatchEvent(new Event('submit'));
+        if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+          sidebar.classList.remove('open');
+        }
       }
-    }
+    });
   });
-});
+}
+
+attachClickHandlers('.topic-item');
+attachClickHandlers('.hero-btn');
 
 // Inicialização
 loadSettings();
-renderWelcomeMessage();
